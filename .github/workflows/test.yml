@@ -12,6 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
+          sudo snap install yq
+      - run: |
           bash ./tests/txt/parse-config.test.sh
         shell: bash
       - run: |
