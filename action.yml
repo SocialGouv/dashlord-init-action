@@ -15,10 +15,11 @@ runs:
       run: |
         export REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')
         export DASHLORD_REPO_PATH=${{ github.workspace }};
+        export URL_INPUT=${{ github.event.inputs.url }};
 
         echo "REPOSITORY_NAME: $REPOSITORY_NAME"
         echo "DASHLORD_REPO_PATH: $DASHLORD_REPO_PATH"
-        echo "URL_INPUT: ${{ github.event.inputs.url }}"
+        echo "URL_INPUT: $URL_INPUT"
 
         if [[ -n "$URL_INPUT" ]]
         then
