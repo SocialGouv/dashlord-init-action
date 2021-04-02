@@ -12,8 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          sh ./tests/txt/parse-config.test.sh
+          bash ./tests/txt/parse-config.test.sh
         shell: bash
       - run: |
-          sh ./tests/yaml/parse-config.test.sh
+          bash ./tests/yaml/parse-config.test.sh
         shell: bash

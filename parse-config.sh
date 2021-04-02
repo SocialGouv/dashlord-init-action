@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 # check wether dashlord.yml or urls.txt exist and output a proper list of urls as JSON
