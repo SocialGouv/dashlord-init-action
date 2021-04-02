@@ -2,9 +2,6 @@
 set -e
 
 cd $(dirname $0)
-dirname .
-ls
-ls ..
 
 source ./../../parse-config.sh
 

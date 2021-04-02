@@ -2,12 +2,8 @@
 set -e
 
 cd $(dirname $0)
-dirname .
-ls
-ls ..
-ls ../..
 
-./../../parse-config.sh
+source ./../../parse-config.sh
 
 EXPECTED='["https://www.free.fr","http://chez.com"]'
 RES=$(parseConfig)
