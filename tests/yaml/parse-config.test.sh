@@ -1,6 +1,11 @@
 #!/bin/sh
+set -e
 
 cd $(dirname $0)
+dirname .
+ls
+ls ..
+
 source ./../../parse-config.sh
 
 EXPECTED='["https://www.free.fr","http://chez.com"]'
