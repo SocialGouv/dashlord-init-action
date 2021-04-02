@@ -18,6 +18,8 @@ then
     echo "Received: $RES"
     echo "Expected: $EXPECTED"
     exit 1
+else
+    echo "OK"
 fi
 
 exit 0

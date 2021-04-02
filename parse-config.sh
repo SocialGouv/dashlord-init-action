@@ -3,7 +3,7 @@
 #
 # check wether dashlord.yml or urls.txt exist and output a proper list of urls as JSON
 #
-function parseConfig {
+function parseConfig() {
     if [[ -e "dashlord.yaml" ]]
     then
         # echo "parse dashlord.yaml"
