@@ -21,6 +21,8 @@ runs:
         echo "DASHLORD_REPO_PATH: $DASHLORD_REPO_PATH"
         echo "URL_INPUT: $URL_INPUT"
 
+        mkdir -p scans || true
+
         if [[ -n "$URL_INPUT" ]]
         then
           URLS_JSON="[\"${{ github.event.inputs.url }}\"]"
