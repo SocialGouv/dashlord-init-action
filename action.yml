@@ -1,0 +1,39 @@
+name: "DashLord init action"
+description: "Parse dashlord config files"
+outputs:
+  urls:
+    description: List of urls to scan as plain text
+    value: ${{ steps.init.outputs.urls }}
+  urls_json:
+    description: List of urls to scan as json
+    value: ${{ steps.init.outputs.urls_json }}
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      id: init
+      run: |
+        export REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')
+        export DASHLORD_REPO_PATH=${{ github.workspace }};
+
+        echo "REPOSITORY_NAME: $REPOSITORY_NAME"
+        echo "DASHLORD_REPO_PATH: $DASHLORD_REPO_PATH"
+        echo "URL_INPUT: ${{ github.event.inputs.url }}"
+
+        if [[ -n "$URL_INPUT" ]]
+        then
+          URLS_JSON="[\"${{ github.event.inputs.url }}\"]"
+        else
+          sudo snap install yq
+          source ${{ github.action_path }}/parse-config.sh
+          URLS_JSON=$(parseConfig)
+        fi
+
+        URLS=$(echo $URLS_JSON | jq -r ".[]")
+        URLS="${URLS//'%'/'%25'}"
+        URLS="${URLS//$'\n'/'%0A'}"
+        URLS="${URLS//$'\r'/'%0D'}"
+
+        echo "::set-output name=urls_json::$URLS_JSON"
+        echo "::set-output name=urls::$URLS"
+      

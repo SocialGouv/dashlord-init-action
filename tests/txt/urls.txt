@@ -1,0 +1,5 @@
+# some comment
+https://www.free.fr
+invalid-url
+# https://blabla.com
+http://chez.com
