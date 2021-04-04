@@ -32,7 +32,6 @@ runs:
           URLS_JSON=$(parseConfig)
         fi
 
-        echo "URLS: $URLS"
         echo "URLS_JSON: $URLS_JSON"
 
         URLS=$(echo $URLS_JSON | jq -r ".[]")

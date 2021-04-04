@@ -1,0 +1,5 @@
+title: Test 1
+urls:
+  - url: https://www.free.fr
+  - url: invalid-url
+  - url: http://chez.com
