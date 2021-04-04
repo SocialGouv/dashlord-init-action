@@ -21,7 +21,7 @@ function parseConfig {
     if [[ -e "./results" ]]; then
         NEW_URLS=()
         for URL in $URLS; do
-            URL_BASE64=$(printf "%s" "$URL" | base64 -b 500) # default is wrap at 76, on osx its '-b', on linux '-w'
+            URL_BASE64=$(printf "%s" "$URL" | base64 -w 500) # default is wrap at 76, on osx its '-b', on linux '-w'
             if [[ ! -e "./results/$URL_BASE64" ]]; then
                 NEW_URLS+=$URL
             fi
