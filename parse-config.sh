@@ -37,3 +37,10 @@ function parseConfig {
 
     echo $URLS_JSON
 }
+
+A=()
+A+="http://www.free.fr"
+A+="http://www.chez.com"
+echo "${A[@]}"
+printf '%s\n' "$(IFS=\\nsss; printf '%s' "${A[*]}")"
+IFS=\n eval 'joined="${foo[*]}"'
