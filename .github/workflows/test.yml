@@ -20,5 +20,5 @@ jobs:
           bash ./tests/yaml/parse-config.test.sh
         shell: bash
       - run: |
-          bash ./tests/new-url/parse-config.test.sh
+          bash ./tests/new-urls/parse-config.test.sh
         shell: bash
