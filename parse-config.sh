@@ -7,15 +7,18 @@ function parseConfig {
     if [[ -e "dashlord.yaml" ]]; then
         # echo "parse dashlord.yaml"
         URLS=$(yq e ".urls[].url" dashlord.yaml)
+        JSON_URLS=$(yq e -j "." dashlord.yaml)
     elif [[ -e "dashlord.yml" ]]; then
         # echo "parse dashlord.yml"
         URLS=$(yq e ".urls[].url" dashlord.yml)
+        JSON_URLS=$(yq e -j "." dashlord.yml)
     elif [[ -e "urls.txt" ]]; then
         # echo "parse urls.txt"
         URLS=$(cat urls.txt)
     fi
 
     URLS=$(echo "$URLS" | grep -e "^http" | grep -v "^\s*#")
+    JSON_URLS=$(echo "$JSON_URLS" | jq '.urls | .[] | select(.url | test("http"; "ix")) | {url: .url, repositories: .repositories} | with_entries(select(.value != null))' | jq -s '.')
 
     # check if there's some new urls in the config
     if [[ -e "./results" ]]; then
@@ -33,7 +36,7 @@ function parseConfig {
     fi
 
     URLS="${URLS//'%'/'%25'}"
-    URLS_JSON=$(echo "$URLS" | jq -Rsc 'split("\n") [0:-1]' -)
+    URLS_JSON=$JSON_URLS
 
     echo $URLS_JSON
 }

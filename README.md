@@ -36,6 +36,9 @@ title: Test 1
 urls:
   - url: https://www.free.fr
     title: Some website
+    repositories:
+      - iliad/free-ui
+      - iliad/free-api
   - url: invalid-url
   - url: http://chez.com
 ```
