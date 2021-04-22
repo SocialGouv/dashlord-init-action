@@ -1,11 +1,29 @@
 #!/bin/bash
 set -e
 
-cd $(dirname $0)
+cd "$(dirname "$0")"
 
 source ./../../parse-config.sh
 
-EXPECTED='["https://www.free.fr","http://chez.com"]'
+EXPECTED='[
+  {
+    "url": "https://www.free.fr",
+    "repositories": [
+      "iliad/free-ui",
+      "iliad/free-api"
+    ]
+  },
+  {
+    "url": "http://chez.com",
+    "repositories": [
+      "ici/chez-ui",
+      "ici/chez-api"
+    ]
+  },
+  {
+    "url": "http://toto.com"
+  }
+]'
 RES=$(parseConfig)
 
 echo "Should parse urls.txt correctly"

@@ -1,5 +1,6 @@
 # some comment
-https://www.free.fr
+https://www.free.fr;iliad/free-ui,iliad/free-api
 invalid-url
 # https://blabla.com
-http://chez.com
+http://chez.com;ici/chez-ui,ici/chez-api
+http://toto.com

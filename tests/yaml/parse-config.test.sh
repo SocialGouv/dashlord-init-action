@@ -1,11 +1,22 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
-cd $(dirname $0)
+cd "$(dirname "$0")"
 
 source ./../../parse-config.sh
 
-EXPECTED='[ { "url": "https://www.free.fr", "repositories": [ "iliad/free-ui", "iliad/free-api" ] }, { "url": "http://chez.com" } ]'
+EXPECTED='[
+  {
+    "url": "https://www.free.fr",
+    "repositories": [
+      "iliad/free-ui",
+      "iliad/free-api"
+    ]
+  },
+  {
+    "url": "http://chez.com"
+  }
+]'
 RES=$(parseConfig)
 
 echo "Should parse YAML correctly"
