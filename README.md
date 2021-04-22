@@ -32,13 +32,24 @@ jobs:
 ### Expected dashlord.yaml
 
 ```yml
-title: Test 1
+title: My dashlord
 urls:
   - url: https://www.free.fr
     title: Some website
     repositories:
       - iliad/free-ui
       - iliad/free-api
-  - url: invalid-url
   - url: http://chez.com
+    repositories:
+      - ici/chez-ui
+      - ici/chez-api
+```
+
+### Expected ursl.txt
+
+```txt
+# My urls with repositories
+https://www.free.fr;iliad/free-ui,iliad/free-api
+http://chez.com;ici/chez-ui,ici/chez-api
+http://toto.com
 ```
