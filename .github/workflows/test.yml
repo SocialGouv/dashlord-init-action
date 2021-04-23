@@ -61,8 +61,11 @@ jobs:
           fi
 
           echo "URLS_JSON: $URLS_JSON"
-          URLS_JSON_ESCAPED=$(echo "$URLS_JSON" | sed -E 's/([^\]|^)"/\1\\"/g')
-          echo "URLS_JSON_ESCAPED: $URLS_JSON_ESCAPED"
+          URLS=$(echo $URLS_JSON | jq -r ".")
+          URLS="${URLS//'%'/'%25'}"
+          URLS="${URLS//$'\n'/'%0A'}"
+          URLS="${URLS//$'\r'/'%0D'}"
+          echo "URLS_JSON ESCAPED: $URLS"
 
-          echo "::set-output name=urls_json::$URLS_JSON_ESCAPED"
-          echo "::set-output name=urls::$URLS_JSON_ESCAPED"
+          echo "::set-output name=urls_json::$URLS"
+          echo "::set-output name=urls::$URLS"
