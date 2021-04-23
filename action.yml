@@ -22,13 +22,17 @@ runs:
         echo "URL_INPUT: $URL_INPUT"
 
         mkdir -p $DASHLORD_REPO_PATH/scans || true
+        wget https://github.com/mikefarah/yq/releases/download/v4.7.0/yq_linux_amd64.tar.gz -O - |\
+        tar xz && sudo mv yq_linux_amd64 /usr/bin/yq
+        source ${{ github.action_path }}/parse-config.sh
 
         if [[ -n "$URL_INPUT" ]]
         then
-          URLS_JSON="[\"${{ github.event.inputs.url }}\"]"
+          URL=${{ github.event.inputs.url }}
+          REPOS_URLS='[]'
+          i=0
+          URLS_JSON=$(parseRepositories "$URL" "$REPOS_URLS" "$i")
         else
-          sudo snap install yq
-          source ${{ github.action_path }}/parse-config.sh
           URLS_JSON=$(parseConfig)
         fi
 

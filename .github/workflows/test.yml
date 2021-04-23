@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [ "*" ]
 
-name: Tests
+name: Test parseconfig.sh
 jobs:
   tests:
     runs-on: ubuntu-latest
@@ -18,8 +18,12 @@ jobs:
           bash ./tests/txt/parse-config.test.sh
         shell: bash
       - run: |
+          bash ./tests/txt/parse-repos.test.sh
+        shell: bash
+      - run: |
           bash ./tests/yaml/parse-config.test.sh
         shell: bash
       - run: |
           bash ./tests/new-urls/parse-config.test.sh
         shell: bash
+

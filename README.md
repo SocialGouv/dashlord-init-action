@@ -53,3 +53,12 @@ https://www.free.fr;iliad/free-ui,iliad/free-api
 http://chez.com;ici/chez-ui,ici/chez-api
 http://toto.com
 ```
+
+## Hacking
+
+Prerequisite: docker installed.
+Test action locally with [act](https://github.com/nektos/act):
+
+```shell
+act
+```

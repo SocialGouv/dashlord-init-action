@@ -1,9 +1,30 @@
 #!/bin/bash
 
+function parseRepositories() {
+    local URL="$1"
+    local REPOS_URLS="$2"
+    local i="$3"
+    ARRAY_URLS=[]
+    IFS=';' read -ra ARRAY_REPO_URL <<< "$URL"
+    if [[ ${#ARRAY_REPO_URL[*]} -gt 1 ]]; then
+        ARRAY_URLS[$i]=${ARRAY_REPO_URL[0]}
+        REPOS_URL=$(jq -n --arg url "${ARRAY_REPO_URL[0]}" '[{url: $url, repositories: []}]')
+        IFS=',' read -ra ARRAY_REPOS <<< "${ARRAY_REPO_URL[1]}"
+        for REPO in "${ARRAY_REPOS[@]}"; do
+            REPOS_URL=$(echo "$REPOS_URL" | jq --argjson repos "$REPOS_URL" --arg url "${ARRAY_REPO_URL[0]}" --arg repo "$REPO" '.[] | select(.url==$url) | .repositories += [$repo]' | jq -s '.')
+        done
+        REPOS_URLS=$(jq -n --argjson url "$REPOS_URL" --argjson urls "$REPOS_URLS" '$urls + $url')
+    else
+        ARRAY_URLS[$i]="$URL"
+        REPOS_URLS=$(jq -n --arg url "$URL" --argjson repos "$REPOS_URLS" '$repos + [{url: $url}]')
+    fi
+    echo "$REPOS_URLS"
+}
+
 #
 # check wether dashlord.yml or urls.txt exist and output a proper list of urls as JSON
 #
-function parseConfig {
+function parseConfig() {
     if [[ -e "dashlord.yaml" ]]; then
         # echo "parse dashlord.yaml"
         URLS=$(yq e ".urls[].url" dashlord.yaml)
@@ -23,26 +44,13 @@ function parseConfig {
         IFS='|' read -ra ARRAY_REPOS_URLS <<< "$URLS"
         mapfile -d $'\0' -t ARRAY_REPOS_URLS < <(printf '%s\0' "${ARRAY_REPOS_URLS[@]}" | grep -Pzv "^\s*#")
         mapfile -d $'\0' -t ARRAY_REPOS_URLS < <(printf '%s\0' "${ARRAY_REPOS_URLS[@]}" | grep -Pze "^http")
-        REPO_URLS='[]'
-        ARRAY_URLS=[]
+        REPOS_URLS='[]'
         i=0
         for URL in "${ARRAY_REPOS_URLS[@]}"; do
-            IFS=';' read -ra ARRAY_REPO_URL <<< "$URL"
-            if [[ ${#ARRAY_REPO_URL[*]} -gt 1 ]]; then
-                ARRAY_URLS[$i]=${ARRAY_REPO_URL[0]}
-                REPO_URL=$(jq -n --arg url "${ARRAY_REPO_URL[0]}" '[{url: $url, repositories: []}]')
-                IFS=',' read -ra ARRAY_REPOS <<< "${ARRAY_REPO_URL[1]}"
-                for REPO in "${ARRAY_REPOS[@]}"; do
-                    REPO_URL=$(echo "$REPO_URL" | jq --argjson repos "$REPO_URL" --arg url "${ARRAY_REPO_URL[0]}" --arg repo "$REPO" '.[] | select(.url==$url) | .repositories += [$repo]' | jq -s '.')
-                done
-                REPO_URLS=$(jq -n --argjson url "$REPO_URL" --argjson urls "$REPO_URLS" '$urls + $url')
-            else
-                ARRAY_URLS[$i]=$URL
-                REPO_URLS=$(jq -n --arg url "$URL" --argjson repos "$REPO_URLS" '$repos + [{url: $url}]')
-            fi
+            REPOS_URLS=$(parseRepositories "$URL" "$REPOS_URLS" "$i")
             i=$i+1
         done
-        JSON_URLS=$REPO_URLS
+        JSON_URLS=$REPOS_URLS
     fi
 
 
