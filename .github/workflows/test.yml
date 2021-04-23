@@ -12,7 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          sudo snap install yq
+          wget https://github.com/mikefarah/yq/releases/download/v4.7.0/yq_linux_amd64.tar.gz -O - |\
+          tar xz && sudo mv yq_linux_amd64 /usr/bin/yq
       - run: |
           bash ./tests/txt/parse-config.test.sh
         shell: bash
