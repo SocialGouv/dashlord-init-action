@@ -8,7 +8,7 @@ name: Test parseconfig.sh
 jobs:
   tests:
     runs-on: ubuntu-latest
-    name: Tests
+    name: Test sh
     steps:
       - uses: actions/checkout@v2
       - run: |
@@ -26,4 +26,43 @@ jobs:
       - run: |
           bash ./tests/new-urls/parse-config.test.sh
         shell: bash
+  action:
+    runs-on: ubuntu-latest
+    name: Test GH action
+    steps:
+      - name: Checkout Github
+        uses: actions/checkout@v2
+      - shell: bash
+        id: action
+        name: action
+        run: |
+          export REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')
+          export DASHLORD_REPO_PATH=${{ github.workspace }};
+          export URL_INPUT=${{ github.event.inputs.url }};
 
+          echo "REPOSITORY_NAME: $REPOSITORY_NAME"
+          echo "DASHLORD_REPO_PATH: $DASHLORD_REPO_PATH"
+          echo "URL_INPUT: $URL_INPUT"
+
+          mkdir -p $DASHLORD_REPO_PATH/scans || true
+          wget https://github.com/mikefarah/yq/releases/download/v4.7.0/yq_linux_amd64.tar.gz -O - |\
+          tar xz && sudo mv yq_linux_amd64 /usr/bin/yq
+          source ../dashlord-init-action/parse-config.sh
+
+          if [[ -n "$URL_INPUT" ]]
+          then
+            URL=$URL_INPUT
+            REPOS_URLS='[]'
+            i=0
+            URLS_JSON=$(parseRepositories "$URL" "$REPOS_URLS" "$i")
+          else
+            cp ../dashlord-init-action/tests/yaml/dashlord.yaml dashlord.yaml
+            URLS_JSON=$(parseConfig)
+          fi
+
+          echo "URLS_JSON: $URLS_JSON"
+          URLS_JSON_ESCAPED=$(echo "$URLS_JSON" | sed -E 's/([^\]|^)"/\1\\"/g')
+          echo "URLS_JSON_ESCAPED: $URLS_JSON_ESCAPED"
+
+          echo "::set-output name=urls_json::$URLS_JSON_ESCAPED"
+          echo "::set-output name=urls::$URLS_JSON_ESCAPED"

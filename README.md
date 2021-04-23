@@ -59,6 +59,14 @@ http://toto.com
 Prerequisite: docker installed.
 Test action locally with [act](https://github.com/nektos/act):
 
+from files (no url):
+
 ```shell
-act
+act -j action -e no-url.json
+```
+
+from url input (workflow_dispatch):
+
+```shell
+act -j action -e url.json
 ```
