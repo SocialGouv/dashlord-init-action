@@ -7,6 +7,9 @@ outputs:
   urls_json:
     description: List of urls to scan as json
     value: ${{ steps.init.outputs.urls_json }}
+  json:
+    description: Full dashlord.yaml config
+    value: ${{ steps.init.outputs.json }}
 runs:
   using: "composite"
   steps:
@@ -42,6 +45,19 @@ runs:
         URLS="${URLS//$'\n'/'%0A'}"
         URLS="${URLS//$'\r'/'%0D'}"
         echo "URLS_JSON ESCAPED: $URLS"
+
+        if [[ -e "dashlord.yaml" ]]; then
+          # echo "parse dashlord.yaml"
+          JSON="$( yq -j e dashlord.yaml )"
+        elif [[ -e "dashlord.yml" ]]; then
+          # echo "parse dashlord.yml"
+          JSON="$( yq -j e dashlord.yml )"
+        fi
+        JSON="${JSON//'%'/'%25'}"
+        JSON="${JSON//$'\n'/'%0A'}"
+        JSON="${JSON//$'\r'/'%0D'}"
+
+        echo "::set-output name=json::$JSON"
 
         echo "::set-output name=urls_json::$URLS"
         echo "::set-output name=urls::$URLS"
