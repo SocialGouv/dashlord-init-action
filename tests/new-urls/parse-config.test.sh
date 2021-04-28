@@ -1,11 +1,26 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
-cd $(dirname $0)
+cd "$(dirname "$0")"
 
 source ./../../parse-config.sh
 
-EXPECTED='["http://chez.com"]'
+EXPECTED='[
+  {
+    "url": "https://www.free.fr",
+    "repositories": [
+      "iliad/free-ui",
+      "iliad/free-api"
+    ]
+  },
+  {
+    "url": "http://chez.com",
+    "repositories": [
+      "ici/chez-ui",
+      "ici/chez-api"
+    ]
+  }
+]'
 RES=$(parseConfig)
 
 echo "Should priorize new urls in the config"

@@ -1,5 +1,11 @@
 title: Test 1
 urls:
   - url: https://www.free.fr
+    repositories:
+      - iliad/free-ui
+      - iliad/free-api
   - url: invalid-url
   - url: http://chez.com
+    repositories:
+      - ici/chez-ui
+      - ici/chez-api
