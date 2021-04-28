@@ -45,15 +45,6 @@ urls:
       - ici/chez-api
 ```
 
-### Expected ursl.txt
-
-```txt
-# My urls with repositories
-https://www.free.fr;iliad/free-ui,iliad/free-api
-http://chez.com;ici/chez-ui,ici/chez-api
-http://toto.com
-```
-
 ## Hacking
 
 Prerequisite: docker installed.
