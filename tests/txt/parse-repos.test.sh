@@ -12,21 +12,14 @@ EXPECTED='[
       "iliad/free-ui",
       "iliad/free-api"
     ]
-  },
-  {
-    "url": "http://chez.com",
-    "repositories": [
-      "ici/chez-ui",
-      "ici/chez-api"
-    ]
-  },
-  {
-    "url": "http://toto.com"
   }
 ]'
-RES=$(parseConfig)
+URL="https://www.free.fr;iliad/free-ui,iliad/free-api"
+REPOS_URLS='[]'
+i=0
+RES=$(parseRepositories "$URL" "$REPOS_URLS" "$i")
 
-echo "Should parse urls.txt correctly"
+echo "Should parse url;repo1,repo2 correctly"
 if [[ "$RES" != "$EXPECTED" ]]
 then
     echo "TXT config parse fail"

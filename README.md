@@ -32,10 +32,32 @@ jobs:
 ### Expected dashlord.yaml
 
 ```yml
-title: Test 1
+title: My dashlord
 urls:
   - url: https://www.free.fr
     title: Some website
-  - url: invalid-url
+    repositories:
+      - iliad/free-ui
+      - iliad/free-api
   - url: http://chez.com
+    repositories:
+      - ici/chez-ui
+      - ici/chez-api
+```
+
+## Hacking
+
+Prerequisite: docker installed.
+Test action locally with [act](https://github.com/nektos/act):
+
+from files (no url):
+
+```shell
+act -j action -e no-url.json
+```
+
+from url input (workflow_dispatch):
+
+```shell
+act -j action -e url.json
 ```

@@ -25,22 +25,26 @@ runs:
         echo "URL_INPUT: $URL_INPUT"
 
         mkdir -p $DASHLORD_REPO_PATH/scans || true
+        wget https://github.com/mikefarah/yq/releases/download/v4.7.0/yq_linux_amd64.tar.gz -O - |\
+        tar xz && sudo mv yq_linux_amd64 /usr/bin/yq
+        source ${{ github.action_path }}/parse-config.sh
 
         if [[ -n "$URL_INPUT" ]]
         then
-          URLS_JSON="[\"${{ github.event.inputs.url }}\"]"
+          URL=$URL_INPUT
+          REPOS_URLS='[]'
+          i=0
+          URLS_JSON=$(parseRepositories "$URL" "$REPOS_URLS" "$i")
         else
-          sudo snap install yq
-          source ${{ github.action_path }}/parse-config.sh
           URLS_JSON=$(parseConfig)
         fi
 
         echo "URLS_JSON: $URLS_JSON"
-
-        URLS=$(echo $URLS_JSON | jq -r ".[]")
+        URLS=$(echo $URLS_JSON | jq -r ".")
         URLS="${URLS//'%'/'%25'}"
         URLS="${URLS//$'\n'/'%0A'}"
         URLS="${URLS//$'\r'/'%0D'}"
+        echo "URLS_JSON ESCAPED: $URLS"
 
         if [[ -e "dashlord.yaml" ]]; then
           # echo "parse dashlord.yaml"
@@ -54,6 +58,7 @@ runs:
         JSON="${JSON//$'\r'/'%0D'}"
 
         echo "::set-output name=json::$JSON"
-        echo "::set-output name=urls_json::$URLS_JSON"
+
+        echo "::set-output name=urls_json::$URLS"
         echo "::set-output name=urls::$URLS"
       
