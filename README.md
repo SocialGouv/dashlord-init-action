@@ -13,6 +13,7 @@ jobs:
     outputs:
       urls: ${{ steps.init.outputs.urls }}
       urls_json: ${{ steps.init.outputs.urls_json }}
+      json: ${{ steps.init.outputs.json }}
     steps:
       - uses: actions/checkout@v2
       - id: init
@@ -25,7 +26,7 @@ jobs:
       fail-fast: false
       max-parallel: 3
       matrix:
-        url: ${{ fromJson(needs.init.outputs.urls_json) }}
+        urls: ${{ fromJson(needs.init.outputs.urls_json) }}
     steps: ...
 ```
 
