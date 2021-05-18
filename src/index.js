@@ -11,7 +11,6 @@ const getOutputs = () => {
       .map((s) => s.trim())
       .filter(Boolean);
 
-  core.info(`inputs.url :${core.getInput("url")}`);
   core.info(`urlsInput :${urlsInput}`);
 
   let dashlordConfig;
