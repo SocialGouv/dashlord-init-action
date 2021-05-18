@@ -7042,12 +7042,17 @@ const getOutputs = () => {
       .map((s) => s.trim())
       .filter(Boolean);
 
+  core.info(`urlsInput :${urlsInput}`);
+
   let dashlordConfig;
   if (fs.existsSync("./dashlord.yml")) {
+    core.info(`load dashlord.yml`);
     dashlordConfig = YAML.parse(fs.readFileSync("./dashlord.yml", "utf8"));
   } else if (fs.existsSync("./dashlord.yaml")) {
+    core.info(`load dashlord.yaml`);
     dashlordConfig = YAML.parse(fs.readFileSync("./dashlord.yaml", "utf8"));
   } else {
+    core.error(`Cannot load dashlord.yaml`);
     throw new Error("Cannot load dashlord.yml");
   }
 
@@ -7058,6 +7063,9 @@ const getOutputs = () => {
       urlsInput && urlsInput.length ? urlsInput.includes(url.url) : true
     );
   const urls = urls_json.map((u) => u.url).join("\n");
+
+  core.info(`urls :${urls}`);
+
   return { urls, urls_json, json: dashlordConfig };
 };
 
