@@ -1,3 +1,9 @@
+# deprecated
+
+## see https://github.com/SocialGouv/dashlord
+
+---
+
 # socialgouv/dashlord-init-action
 
 Parse a `dashlord.yaml` or `urls.txt` file to generate a list of urls to use in a GitHub action jobs matrix.
